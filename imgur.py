@@ -8,6 +8,5 @@ refresh_token = os.getenv('IMGUR_REFRESH_TOKEN')
 imgur_client = ImgurClient(client_id, client_secret, access_token, refresh_token)
 
 def upload_image(path):
-    print(access_token)
     image = imgur_client.upload_from_path(path)
     return image
