@@ -27,12 +27,15 @@ async def on_message(message):
 
     if pixiv_re.search(message.content):
         pixiv_pages =  pixiv_re.finditer(message.content)
+        embeds = []
+
+        #Loopear sobre las páginas detectadas
         for page in pixiv_pages:
             page_id = int(page.groups()[-1])
             illust =  pixiv.get_illust(page_id)
             image = pixiv.upload_image_to_imgur(illust.image_urls['large'])
+            if not image: return
             
-            new_content = pixiv_re.sub('', message.content)
             embed = discord.Embed(
                 title = illust.title,
                 colour = discord.Colour.from_rgb(0, 151, 250),
@@ -43,12 +46,19 @@ async def on_message(message):
                 name=f'💬 {illust.total_comments} ❤ {illust.total_bookmarks} 👁 {illust.total_view}',
                 value=f'[Haz click aquí]({page.group(0)})',
             )
-
-            await message.channel.send(
-                content = new_content if new_content else None,
-                embed = embed,
-            )
-            await message.delete()
+            embeds.append(embed)
+        
+        #Enviar mensaje de reemplazo
+        if not len(embeds): return
+        new_content = pixiv_re.sub('', message.content)
+        await message.channel.send(
+            content = new_content if new_content else None,
+            embed = embeds.pop(0),
+        )
+        for embed in embeds:
+            await message.channel.send(embed=embed)
+        
+        await message.delete()
 
 #Comandos
 #Ping
