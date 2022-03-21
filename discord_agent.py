@@ -8,11 +8,10 @@ class DiscordAgent:
     async def setup(self, channel:discord.TextChannel, name:str='Agente ZYX'):
         channel_webhooks = await channel.webhooks()
         for webhook in channel_webhooks:
-            if(webhook.channel_id == channel.id):
+            if webhook.token and webhook.channel_id == channel.id:
                 self.webhook = webhook
         if not self.webhook:
             self.webhook = await channel.create_webhook(name=name)
-        print(f'Se asoció un Webhook al Agente: {self.webhook}')
         return self
 
     def set_user(self, user:discord.User):
