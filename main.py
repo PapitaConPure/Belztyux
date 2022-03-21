@@ -26,6 +26,7 @@ async def on_message(message):
     '''Ejecutado al recibir un mensaje'''
     if message.author == discord_client.user: return
     if not message.content: return
+    discord_client.process_commands(message)
 
     if pixiv_re.search(message.content):
         pixiv_pages =  pixiv_re.finditer(message.content)
