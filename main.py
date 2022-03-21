@@ -8,6 +8,7 @@ import re
 
 #Puerta IO de Discord
 discord_client = commands.Bot(command_prefix = 'zx ')
+pixiv.auth()
 
 #Inicio de weá del bot
 @discord_client.event

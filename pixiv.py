@@ -1,5 +1,6 @@
 import shutil
 import tempfile
+import threading
 from pixivpy3 import *
 import imgur
 import os
@@ -10,7 +11,14 @@ dirname = os.path.dirname(__file__)
 #Autorizar API de pixiv
 pixiv_api = AppPixivAPI()
 token = os.getenv('PIXIV_REFRESH_TOKEN')
-pixiv_api.auth(refresh_token=token)
+
+def auth():
+    try:
+        pixiv_api.auth(refresh_token=token)
+        print('Token de acceso de pixiv regenerado')
+    except Exception as e:
+        print(f'Ocurrió un problema al regenerar el Token de acceso de pixiv:\n{e}')
+    threading.Timer(60 * 5, auth).start()
 
 def get_illust(page_id):
     '''Conseguir objeto Illust desde una ID de ilustración'''
