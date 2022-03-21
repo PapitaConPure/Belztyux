@@ -4,9 +4,8 @@ import os
 
 #Autorizar API de pixiv
 pixiv_api = AppPixivAPI()
-#print(os.getenv('PIXIV_REFRESH_TOKEN'))
-#pixiv_auth.refresh(os.getenv('PIXIV_REFRESH_TOKEN'))
-pixiv_api.auth(refresh_token='o3GrJYb2UNalQilJSGeU5cXMj9m430-dAcEYUgeErn8')
+token = os.getenv('PIXIV_REFRESH_TOKEN')
+pixiv_api.auth(refresh_token=token)
 
 def get_illust(page_id):
     '''Conseguir objeto Illust desde una ID de ilustración'''
