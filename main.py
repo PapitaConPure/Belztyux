@@ -29,14 +29,13 @@ async def on_message(message):
         for page in pixiv_pages:
             page_id = int(page.groups()[-1])
             illust =  pixiv.get_illust(page_id)
-            image_name = f'pixiv_temp_{page_id}'
-            image = pixiv.upload_image_to_imgur(illust.image_urls['large'], image_name)
+            image = pixiv.upload_image_to_imgur(illust.image_urls['large'])
             
+            new_content = pixiv_re.sub('', message.content)
             embed = discord.Embed(
                 title = illust.title,
                 colour = discord.Colour.from_rgb(0, 151, 250),
             )
-
             embed.set_author(name=message.author, icon_url=message.author.avatar_url)
             embed.set_image(url=image['link'])
             embed.add_field(
@@ -44,13 +43,11 @@ async def on_message(message):
                 value=f'[Haz click aquí]({page.group(0)})',
             )
 
-            new_content = pixiv_re.sub('', message.content)
-
             await message.channel.send(
                 content = new_content if new_content else None,
                 embed = embed,
             )
-        await message.delete()
+            await message.delete()
 
 #Comandos
 #Ping
