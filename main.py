@@ -1,10 +1,10 @@
+from dotenv import load_dotenv
+load_dotenv()
 import discord
+from discord.ext import commands
 import pixiv
 import os
 import re
-from discord.ext import commands
-from dotenv import load_dotenv
-load_dotenv()
 
 #Puerta IO de Discord
 discord_client = commands.Bot(command_prefix = 'zx ')
