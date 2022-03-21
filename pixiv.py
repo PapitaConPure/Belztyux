@@ -15,11 +15,11 @@ def get_illust(page_id):
 def upload_image_to_imgur(url, image_filename='pixiv-temp'):
     '''Subir imagen de pixiv a Imgur y retornar el enlace de Imgur'''
     print(token)
-    try:
-        pixiv_api.download(url, path='pix', name=image_filename)
-        image = imgur.upload_image(os.path.join('pix', image_filename))
-        os.remove(os.path.join('pix', image_filename))
-        return image
-    except Exception:
-        print('Error al descargar imagen desde pixiv o subirla a Imgur')
-        return None
+    #try:
+    pixiv_api.download(url, path='pix', name=image_filename)
+    image = imgur.upload_image(os.path.join('pix', image_filename))
+    os.remove(os.path.join('pix', image_filename))
+    return image
+    #except Exception:
+    #    print('Error al descargar imagen desde pixiv o subirla a Imgur')
+    #    return None
