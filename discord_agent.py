@@ -12,6 +12,7 @@ class DiscordAgent:
                 self.webhook = webhook
         if not self.webhook:
             self.webhook = await channel.create_webhook(name=name)
+        print(f'Se asoció un Webhook al Agente: {self.webhook}')
         return self
 
     def set_user(self, user:discord.User):
@@ -21,6 +22,8 @@ class DiscordAgent:
         if not user:
             user = self.user
         try:
+            print(f'Usuario asociado: {user}')
+            print(f'Webhook asociado: {self.webhook}')
             return await self.webhook.send(
                 content = content,
                 embeds = embeds,

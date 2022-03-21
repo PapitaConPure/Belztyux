@@ -84,7 +84,7 @@ async def COMMAND_INVITE(ctx):
     embed.add_field(
         name = 'Invitar con permisos solicitados',
         value = 'Para invitarme a otro server, sigue el [proceso de autorización](https://discord.com/oauth2/authorize?client_id=706969070964310108&scope=bot&permissions=433255147584)',
-        inline = False
+        inline = False,
     )
 
     await ctx.send(embed = embed)
