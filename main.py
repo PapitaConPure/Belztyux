@@ -1,3 +1,4 @@
+from datetime import datetime
 from dotenv import load_dotenv
 
 from discord_agent import DiscordAgent
@@ -26,28 +27,38 @@ async def on_message(message):
     '''Ejecutado al recibir un mensaje'''
     if message.author == discord_client.user: return
     if not message.content: return
-    discord_client.process_commands(message)
+    await discord_client.process_commands(message)
 
     if pixiv_re.search(message.content):
         pixiv_pages =  pixiv_re.finditer(message.content)
-        embeds = []
 
-        #Loopear sobre las páginas detectadas
+        #Loopear sobre las páginas detectadas y llenar Embeds
+        embeds = []
         for page in pixiv_pages:
             page_id = int(page.groups()[-1])
             illust =  pixiv.get_illust(page_id)
             image = pixiv.upload_image_to_imgur(illust.image_urls['large'])
             if not image: return
-            
+            tags = map(lambda tag: f'#{tag.translated_name or tag.name}', illust.tags[:3])
+            created_at = datetime.strptime(illust.create_date, '%Y-%m-%dT%H:%M:%S%z').strftime('%d/%m/%y, %I:%M %p (%Z)')
+            print(created_at)
+
             embed = discord.Embed(
                 title = illust.title,
-                description = 'Ilustración animada (ugoira)' if illust.type == 'ugoira' else '',
                 colour = discord.Colour.from_rgb(0, 151, 250),
             )
             embed.set_image(url=image['link'])
+            embed.set_author(name=illust.user.name)
+            embed.set_footer(text=f'pixiv • {illust.id} • {created_at}', icon_url='https://i.imgur.com/e4JPSMl.png')
             embed.add_field(
-                name=f'💬 {illust.total_comments} ❤ {illust.total_bookmarks} 👁 {illust.total_view}',
-                value=f'[Haz click aquí]({page.group(0)})',
+                name = 'Ilustración animada (ugoira)' if illust.type == 'ugoira' else 'Ilustración',
+                value = ', '.join(tags),
+                inline = True,
+            )
+            embed.add_field(
+                name = f'💬 {illust.total_comments} ❤ {illust.total_bookmarks} 👁 {illust.total_view}',
+                value = f'[Clickea aquí para ver en navegador]({page.group(0)})',
+                inline = True,
             )
             embeds.append(embed)
         
