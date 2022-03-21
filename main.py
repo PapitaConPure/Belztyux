@@ -1,8 +1,10 @@
 from dotenv import load_dotenv
+
+from discord_agent import DiscordAgent
 load_dotenv()
 import discord
 from discord.ext import commands
-import pixiv
+import pix.pixiv as pixiv
 import os
 import re
 
@@ -38,9 +40,9 @@ async def on_message(message):
             
             embed = discord.Embed(
                 title = illust.title,
+                description = 'Ilustración animada (ugoira)' if illust.type == 'ugoira' else '',
                 colour = discord.Colour.from_rgb(0, 151, 250),
             )
-            embed.set_author(name=message.author, icon_url=message.author.avatar_url)
             embed.set_image(url=image['link'])
             embed.add_field(
                 name=f'💬 {illust.total_comments} ❤ {illust.total_bookmarks} 👁 {illust.total_view}',
@@ -48,15 +50,13 @@ async def on_message(message):
             )
             embeds.append(embed)
         
-        #Enviar mensaje de reemplazo
+        #Enviar mensaje de reemplazo si se pudieron crear Embeds
         if not len(embeds): return
-        new_content = pixiv_re.sub('', message.content)
-        await message.channel.send(
-            content = new_content if new_content else None,
-            embed = embeds.pop(0),
-        )
-        for embed in embeds:
-            await message.channel.send(embed=embed)
+
+        new_content = pixiv_re.sub('', message.content) or None
+        agent = await DiscordAgent().setup(channel=message.channel)
+        agent.set_user(message.author)
+        await agent.send_as_user(content=new_content,embeds=embeds)
         
         await message.delete()
 
