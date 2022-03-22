@@ -40,7 +40,7 @@ async def on_message(message):
             image = pixiv.upload_image_to_imgur(illust.image_urls['large'])
             if not image: return
             tags = map(lambda tag: f'#{tag.translated_name or tag.name}', illust.tags[:3])
-            created_at = datetime.strptime(illust.create_date, '%Y-%m-%dT%H:%M:%S%z').strftime('%d/%m/%y, %I:%M %p (%Z)')
+            created_at = datetime.strptime(illust.create_date, '%Y-%m-%dT%H:%M:%S%z').strftime('%d/%m/%y, %I:%M %p (JST)')
             print(created_at)
 
             embed = discord.Embed(
@@ -52,7 +52,7 @@ async def on_message(message):
             embed.set_footer(text=f'pixiv • {illust.id} • {created_at}', icon_url='https://i.imgur.com/e4JPSMl.png')
             embed.add_field(
                 name = 'Ilustración animada (ugoira)' if illust.type == 'ugoira' else 'Ilustración',
-                value = ', '.join(tags),
+                value = ' '.join(tags),
                 inline = True,
             )
             embed.add_field(
@@ -74,7 +74,7 @@ async def on_message(message):
 
 #Comandos
 #Ping
-@discord_client.command(aliases = ['ping','bot.ping','b.ping','bot.p','b.p'])
+@discord_client.command(aliases = ['ping','bot ping','b ping','bot p','b p'])
 async def COMMAND_PING(ctx):
     numeros = ''
     async for m_id in ctx.history().filter(lambda m: m.content.startswith('Prueba')).map(lambda m: m.id):
@@ -102,7 +102,7 @@ async def COMMAND_INVITE(ctx):
     await ctx.send(embed = embed)
 
 #Información del servidor
-@discord_client.command(aliases = ['serverinfo','sv.info','s.info','sv.i','s.i'])
+@discord_client.command(aliases = ['serverinfo','sv info','s info','sv i','s i'])
 async def COMMAND_SERVERINFO(ctx):
     numeros = ''
     async for m_id in ctx.history().filter(lambda m: m.content.startswith('Prueba')).map(lambda m: m.id):
@@ -131,7 +131,7 @@ async def COMMAND_ERROR(ctx, error):
         'BadArgument': 'argumentos inválidos.',
         'UserInputError': 'argumentos inválidos.',
         'CommandOnCooldown': 'comando en enfriamiento.',
-        'CommandNotFound': 'este comando no existe. Prueba enviando `zx.ayuda`.'
+        'CommandNotFound': 'este comando no existe. Prueba enviando `zx ayuda`.'
     }
     ctx.send(f':warning: {switcher.get(error, "ha ocurrido un error inesperado.")}')
 '''
