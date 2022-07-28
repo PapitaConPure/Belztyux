@@ -74,7 +74,7 @@ async def on_message(message):
 
 #Comandos
 #Ping
-@discord_client.command(aliases = ['ping','bot ping','b ping','bot p','b p'])
+@discord_client.command(aliases = [ 'ping', 'bot ping', 'b ping', 'bot p', 'b p' ])
 async def COMMAND_PING(ctx):
     numeros = ''
     async for m_id in ctx.history().filter(lambda m: m.content.startswith('Prueba')).map(lambda m: m.id):
@@ -83,7 +83,7 @@ async def COMMAND_PING(ctx):
     await ctx.send(f'Wena po como estai `[{round(discord_client.latency * 1000)}ms]`')
 
 #Enlace de invitación
-@discord_client.command(name = 'invitar', aliases = ['invite','bot.invitar','b.invitar','bot.i','b.i'])
+@discord_client.command(name = 'invitar', aliases = [ 'invite', 'bot invitar', 'b invitar', 'bot i', 'b i' ])
 async def COMMAND_INVITE(ctx):
     embed = discord.Embed(
         title = 'Invita a Belztyux a un servidor',
@@ -102,7 +102,7 @@ async def COMMAND_INVITE(ctx):
     await ctx.send(embed = embed)
 
 #Información del servidor
-@discord_client.command(aliases = ['serverinfo','sv info','s info','sv i','s i'])
+@discord_client.command(name = 'server info', aliases = [ 'serverinfo', 'sv info', 's info', 'info', 'i' ])
 async def COMMAND_SERVERINFO(ctx):
     numeros = ''
     async for m_id in ctx.history().filter(lambda m: m.content.startswith('Prueba')).map(lambda m: m.id):
@@ -116,7 +116,7 @@ async def COMMAND_SERVERINFO(ctx):
     
     embed.set_footer(text='Prueba de pie de embed')
     embed.set_image(url = ctx.guild.icon_url)
-    embed.set_thumbnail(url='https://img2.gelbooru.com/images/99/c2/99c29fb2d86d53394d223bbdec6f9c44.jpg')
+    embed.set_thumbnail(url = 'https://img2.gelbooru.com/images/99/c2/99c29fb2d86d53394d223bbdec6f9c44.jpg')
     embed.set_author(name = ctx.author.name, icon_url = ctx.author.avatar_url)
     embed.add_field(name = 'Numeritos uwu', value = numeros, inline = False)
 
